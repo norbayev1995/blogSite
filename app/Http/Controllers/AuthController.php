@@ -20,7 +20,8 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('user.index'));
+            $user = Auth::user();
+            return redirect()->intended(route('user.show', ['user' => $user]));
         }else{
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',

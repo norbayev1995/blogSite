@@ -12,4 +12,4 @@ Route::resource('user', UserController::class);
 
 Route::get('/login', [AuthController::class, "showLoginForm"]);
 Route::post('/login', [AuthController::class, "login"])->name('login');
-Route::get('/logout', [AuthController::class, "logout"]);
+Route::get('/logout', [AuthController::class, "logout"])->name('logout');

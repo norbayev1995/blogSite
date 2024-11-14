@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -36,7 +38,7 @@ class UserController extends Controller
         $user->password = $request->input('password');
         $file = $request->file('image');
         $newFileName = time() . '_' . $file->getClientOriginalName();
-        $file->move("image/", $newFileName);
+        $file->move("storage/", $newFileName);
         $user->image = $newFileName;
         $user->save();
         return redirect()->route('login');
@@ -55,7 +57,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -63,7 +65,21 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->name = $request->input('name');
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        if ($request->hasFile('image')) {
+            if ($user->image){
+                Storage::delete($user->image);
+            }
+            $path = $request->file('image')->store('images', 'public');
+            $user->image = $path;
+        }
+        if (Hash::check($request->input('old_password'), $user->password)) {
+            $user->password = $request->input('new_password');
+        }
+        $user->save();
+        return redirect()->back();
     }
 
     /**

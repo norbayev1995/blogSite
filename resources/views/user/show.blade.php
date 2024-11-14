@@ -8,15 +8,15 @@
                     <img src="{{ asset('image/' . $user->image) }}" alt="User Avatar"
                          class="w-20 h-20 rounded-full mr-4 mb-4 sm:mb-0">
                     <div class="text-center sm:text-left">
-                        <h1 class="text-2xl font-bold">Azizbek Isroilov</h1>
-                        <p class="text-gray-600">@azizdevfull</p>
+                        <h1 class="text-2xl font-bold">{{$user->name}}</h1>
+                        <p class="text-gray-600">{{$user->username}}</p>
                     </div>
 
                     <!-- Follow/Unfollow Button and Edit Profile -->
                     <div class="mt-4 sm:mt-0 sm:ml-auto">
                         <!-- Edit Profile button for current user's profile -->
                         <!-- Assuming you will check if this is the current user's profile -->
-                        <a href="edit-profile.html"
+                        <a href="{{route('user.edit', ['user' => $user])}}"
                            class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                             Edit Profile
                         </a>

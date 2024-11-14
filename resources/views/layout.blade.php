@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,21 +71,24 @@
                             id="user-menu" aria-expanded="false" aria-haspopup="true"
                             onclick="document.getElementById('profile-dropdown').classList.toggle('hidden')">
                         <span class="sr-only">Open user menu</span>
-                        <img class="h-8 w-8 rounded-full" src="./images/logo-white.png" alt="User image">
+                        @if (Auth::check())
+                            @php
+                                $user = Auth::user();
+                            @endphp
+                            <img class="h-8 w-8 rounded-full"
+                                 src="{{ $user->image ? asset('image/' . $user->image) : asset('default-avatar.png') }}"
+                                 alt="User image">
+                        @endif
                     </button>
 
                     <!-- Profile Dropdown -->
                     <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
                          id="profile-dropdown" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                        <a href="./my-profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                           role="menuitem">Your
-                            Profile</a>
+                        <a href="{{route('user.show', ['user' => $user])}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                           role="menuitem">Your Profile</a>
 
-                        <form method="POST" action="/logout">
-                            <button type="submit"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    role="menuitem">Log out</button>
-                        </form>
+                        <a href="{{url('logout')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                           role="menuitem">Log Out</a>
                     </div>
                 </div>
                 <a href="{{route('login')}}"
