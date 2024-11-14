@@ -87,9 +87,9 @@
                         </form>
                     </div>
                 </div>
-                <a href="/login.html"
+                <a href="{{route('login')}}"
                    class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                <a href="/register.html"
+                <a href="{{route('user.create')}}"
                    class="bg-indigo-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Register</a>
 
             </div>

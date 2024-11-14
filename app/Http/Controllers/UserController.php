@@ -39,6 +39,7 @@ class UserController extends Controller
         $file->move("image/", $newFileName);
         $user->image = $newFileName;
         $user->save();
+        return redirect()->route('login');
     }
 
     /**
@@ -46,7 +47,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('user.show', compact('user'));
     }
 
     /**
