@@ -2,7 +2,7 @@
 @section('content')
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h1 class="text-2xl font-bold mb-6">Edit Profile</h1>
-        <form action="{{route('user.update', ['user' => $user])}}" method="post">
+        <form action="{{route('user.update', ['user' => $user])}}" method="post" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="mb-4">

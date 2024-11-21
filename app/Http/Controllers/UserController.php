@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
+        $user = Auth::user();
         return view('user.index', compact('user'));
     }
 
@@ -36,10 +37,12 @@ class UserController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
-        $file = $request->file('image');
-        $newFileName = time() . '_' . $file->getClientOriginalName();
-        $file->move("storage/", $newFileName);
-        $user->image = $newFileName;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $newFileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('images', $newFileName, 'public');
+            $user->image = $path;
+        }
         $user->save();
         return redirect()->route('login');
     }
@@ -70,7 +73,7 @@ class UserController extends Controller
         $user->email = $request->input('email');
         if ($request->hasFile('image')) {
             if ($user->image){
-                Storage::delete($user->image);
+                unlink('storage/'.$user->image);
             }
             $path = $request->file('image')->store('images', 'public');
             $user->image = $path;

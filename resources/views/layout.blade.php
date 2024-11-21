@@ -76,7 +76,7 @@
                                 $user = Auth::user();
                             @endphp
                             <img class="h-8 w-8 rounded-full"
-                                 src="{{ $user->image ? asset('image/' . $user->image) : asset('default-avatar.png') }}"
+                                 src="{{ $user->image ? asset('storage/' . $user->image) : asset('default-avatar.png') }}"
                                  alt="User image">
                         @endif
                     </button>
@@ -84,8 +84,13 @@
                     <!-- Profile Dropdown -->
                     <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
                          id="profile-dropdown" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                        @if(Auth::check())
+                            @php
+                                $user = Auth::user();
+                            @endphp
                         <a href="{{route('user.show', ['user' => $user])}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                            role="menuitem">Your Profile</a>
+                        @endif
 
                         <a href="{{url('logout')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                            role="menuitem">Log Out</a>
