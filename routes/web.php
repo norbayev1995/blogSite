@@ -11,6 +11,7 @@ Route::middleware('auth')->group(function () {
     })->name('home');
     Route::resource('user', UserController::class);
     Route::resource('post', PostController::class);
+    Route::get('allPosts', [PostController::class, 'allPosts'])->name('allPosts');
 });
 
 Route::get('showRegisterForm', [AuthController::class, 'showRegisterForm'])->name('showRegisterForm');

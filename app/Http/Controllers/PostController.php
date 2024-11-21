@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function allPosts()
+    {
+        $posts = Post::with('user')->get();
+        return view('post.allPosts', compact('posts'));
+    }
     /**
      * Display a listing of the resource.
      */
