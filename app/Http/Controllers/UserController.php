@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        return view('user.index', compact('user'));
+        //
     }
 
     /**
@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        //
     }
 
     /**
@@ -32,19 +32,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
-        $user->name = $request->input('name');
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $newFileName = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('images', $newFileName, 'public');
-            $user->image = $path;
-        }
-        $user->save();
-        return redirect()->route('login');
+        //
     }
 
     /**
@@ -52,7 +40,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show', compact('user'));
+        $posts = $user->posts()->get();
+        return view('user.show', compact('user', 'posts'));
     }
 
     /**
@@ -66,7 +55,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user->name = $request->input('name');
         $user->username = $request->input('username');
@@ -81,7 +70,7 @@ class UserController extends Controller
         if (Hash::check($request->input('old_password'), $user->password)) {
             $user->password = $request->input('new_password');
         }
-        $user->save();
+        $user->update();
         return redirect()->back();
     }
 

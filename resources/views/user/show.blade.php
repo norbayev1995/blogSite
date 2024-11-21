@@ -30,34 +30,29 @@
                 </div>
             </div>
 
-
             <h2 class="text-2xl font-bold mb-4">My Posts</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <img src="./images/post-image.png" alt="Post Image"
-                         class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-bold mb-2">Post Title 1</h3>
-                    <p class="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <div class="flex space-x-2">
-                        <a href="show-post.html" class="text-indigo-600 hover:text-indigo-800">Read More</a>
-                        <a href="edit-post.html" class="text-green-600 hover:text-green-800">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-800">Delete</a>
+            @foreach($posts as $post)
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <img src="{{asset('storage/' . $post->image)}}" alt="Post Image"
+                             class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">{{$post->title}}</h3>
+                        <p class="text-gray-700 mb-4">{{$post->description}}</p>
+                        <div class="flex space-x-2">
+                            <a href="{{route('post.show', ['post' => $post])}}" class="text-indigo-600 hover:text-indigo-800">Read More</a>
+                            <a href="{{route('post.edit', ['post' => $post])}}" class="text-green-600 hover:text-green-800">Edit</a>
+                            <form action="{{ route('post.destroy', ['post' => $post]) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-800"
+                                        onclick="return confirm('Are you sure you want to delete this post?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <img src="./images/post-image.png" alt="Post Image"
-                         class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-bold mb-2">Post Title 2</h3>
-                    <p class="text-gray-700 mb-4">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                        nisi ut aliquip ex ea commodo consequat.</p>
-                    <div class="flex space-x-2">
-                        <a href="show-post.html" class="text-indigo-600 hover:text-indigo-800">Read More</a>
-                        <a href="edit-post.html" class="text-green-600 hover:text-green-800">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-800">Delete</a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </main>
 
